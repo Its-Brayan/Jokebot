@@ -10,21 +10,22 @@ from langgraph.graph.state import CompiledStateGraph
 class Joke(BaseModel):
     text: str
     category: str
+    language: str
 
 class JokeState(BaseModel):
     jokes: Annotated[List[Joke], add] = []
-    jokes_choice : Literal["n","c","q"] = "n"
+    jokes_choice : Literal["n","c", "l", "q"] = "n"
     category : str = "neutral"
     language : str = "en"
     quit : bool = False
 
 def show_menu(state: JokeState) -> dict:
-    user_input = input("[n] Next  [c] Category  [q] Quit\n> ").strip().lower()
+    user_input = input("[n] Next  [c] Category  [l] Language [q] Quit\n> ").strip().lower()
     return {"jokes_choice":user_input}
 
 def fetch_joke(state:JokeState) -> dict:
     joke_text = get_joke(language=state.language,category=state.category)
-    new_joke = Joke(text=joke_text, category=state.category)
+    new_joke = Joke(text=joke_text, category=state.category, language=state.language)
     print("\n😂 Joke:")
     print(joke_text, "\n")
 
@@ -34,8 +35,14 @@ def fetch_joke(state:JokeState) -> dict:
 def update_category(state:JokeState) -> dict:
     categories = ["neutral","chuck","all"]
     selection = int(input("select category [0=neutral, 1=chuck,2=all]:").strip())
+    
     return{"category":categories[selection]}
 
+
+def update_language(state:JokeState) -> dict:
+    languages = ["en","es","de"]
+    selection = int(input("select language [0=en, 1=es, 2=de]:").strip())
+    return{"language":languages[selection]}
 
 def exit_bot(state:JokeState) -> dict:
     return {'quit':True}
@@ -45,6 +52,8 @@ def route_choice(state:JokeState) -> dict:
         return "fetch_joke"
     elif state.jokes_choice == "c":
         return "update_category"
+    elif state.jokes_choice == "l":
+        return "update_language"
     elif state.jokes_choice == "q":
         return "exit_bot"
     return "exit_bot"
@@ -55,6 +64,7 @@ def build_joke_graph() -> CompiledStateGraph:
     workflow.add_node("show_menu",show_menu)
     workflow.add_node("fetch_joke",fetch_joke)
     workflow.add_node("update_category",update_category)
+    workflow.add_node("update_language",update_language)
     workflow.add_node("exit_bot",exit_bot)
 
     workflow.set_entry_point("show_menu")
@@ -65,11 +75,13 @@ def build_joke_graph() -> CompiledStateGraph:
         {
             "fetch_joke":"fetch_joke",
             "update_category":"update_category",
+            "update_language":"update_language",
             "exit_bot":"exit_bot"
         }
     )
     workflow.add_edge("fetch_joke","show_menu")
     workflow.add_edge("update_category","show_menu")
+    workflow.add_edge("update_language","show_menu")
     workflow.add_edge("exit_bot",END)
 
     return workflow.compile()
