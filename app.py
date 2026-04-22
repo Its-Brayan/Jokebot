@@ -14,13 +14,13 @@ class Joke(BaseModel):
 
 class JokeState(BaseModel):
     jokes: Annotated[List[Joke], add] = []
-    jokes_choice : Literal["n","c", "l", "q"] = "n"
+    jokes_choice : Literal["n","c", "l", "r", "q"] = "n"
     category : str = "neutral"
     language : str = "en"
     quit : bool = False
 
 def show_menu(state: JokeState) -> dict:
-    user_input = input("[n] Next  [c] Category  [l] Language [q] Quit\n> ").strip().lower()
+    user_input = input("[n] Next  [c] Category  [l] Language [r] Reset [q] Quit\n> ").strip().lower()
     return {"jokes_choice":user_input}
 
 def fetch_joke(state:JokeState) -> dict:
@@ -44,6 +44,11 @@ def update_language(state:JokeState) -> dict:
     selection = int(input("select language [0=en, 1=es, 2=de]:").strip())
     return{"language":languages[selection]}
 
+def reset_jokes(state:JokeState) -> dict:
+    print("Resetting jokes history...")
+    return {"jokes": []}
+
+
 def exit_bot(state:JokeState) -> dict:
     return {'quit':True}
 
@@ -54,6 +59,8 @@ def route_choice(state:JokeState) -> dict:
         return "update_category"
     elif state.jokes_choice == "l":
         return "update_language"
+    elif state.jokes_choice == "r":
+        return "reset_jokes"
     elif state.jokes_choice == "q":
         return "exit_bot"
     return "exit_bot"
@@ -65,6 +72,7 @@ def build_joke_graph() -> CompiledStateGraph:
     workflow.add_node("fetch_joke",fetch_joke)
     workflow.add_node("update_category",update_category)
     workflow.add_node("update_language",update_language)
+    workflow.add_node("reset_jokes",reset_jokes)
     workflow.add_node("exit_bot",exit_bot)
 
     workflow.set_entry_point("show_menu")
@@ -76,12 +84,14 @@ def build_joke_graph() -> CompiledStateGraph:
             "fetch_joke":"fetch_joke",
             "update_category":"update_category",
             "update_language":"update_language",
+            "reset_jokes":"reset_jokes",
             "exit_bot":"exit_bot"
         }
     )
     workflow.add_edge("fetch_joke","show_menu")
     workflow.add_edge("update_category","show_menu")
     workflow.add_edge("update_language","show_menu")
+    workflow.add_edge("reset_jokes","show_menu")
     workflow.add_edge("exit_bot",END)
 
     return workflow.compile()
