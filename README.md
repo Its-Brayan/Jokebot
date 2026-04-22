@@ -29,6 +29,8 @@ python app.py
 |-----|--------|
 | `n` | Get the next joke |
 | `c` | Change joke category |
+| `l` | Change language |
+| `r` | Reset joke history |
 | `q` | Quit the bot |
 
 ### Categories
@@ -36,6 +38,12 @@ python app.py
 - `0` — Neutral
 - `1` — Chuck Norris
 - `2` — All
+
+### Languages
+
+- `0` — English (`en`)
+- `1` — Spanish (`es`)
+- `2` — German (`de`)
 
 ## Project Structure
 
