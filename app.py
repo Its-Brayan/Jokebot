@@ -7,6 +7,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
+import json
 from config_loader import load_write_config, load_config
 load_dotenv()
 #Define the state
@@ -54,6 +55,24 @@ def make_critic_node():
 def show_final_joke(state:JokeState) -> dict:
     joke = Joke(text=state.latest_joke,category=state.category,language=state.language)
     print(joke)
+    new_joke = joke.model_dump()
+    if os.path.exists("jokes_history.json"):
+        with open("jokes_history.json","r") as f:
+           try:
+               jokes = json.load(f)
+               if isinstance(jokes,dict):
+                   jokes = [jokes]
+           except json.JSONDecodeError:
+               jokes = []
+
+
+    else:
+        jokes = []
+    jokes.append(new_joke)
+
+    with open("jokes_history.json",'w') as f:
+        json.dump(jokes,f,indent=4)
+    
     return {"jokes":[joke],"retry_count":0,"approved":False,"latest_joke":""}
 
 def write_critic_router(state:JokeState) -> str:

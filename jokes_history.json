@@ -1,0 +1,17 @@
+[
+    {
+        "text": "**Reasoning & Choice**\n\n- **Category:** *Dad Developer* \u2013 pun\u2011based humor that plays on programming terminology.  \n- **Constraints:** 1\u20132 lines, technical\u2011audience friendly, light\u2011hearted, no offensive content.  \n- **Goal:** Deliver a quick, groan\u2011worthy punchline that references a common dev concept.\n\n**Final Joke (1 line)**  \n\n*Why do Java developers wear glasses? Because they can\u2019t\u202fC.*",
+        "category": "dad developer",
+        "language": "en"
+    },
+    {
+        "text": "**Dad\u2011Developer Joke (1\u20112 lines, tech\u2011savvy, punny):**  \n*Why did the Python developer bring a ladder to work? Because they wanted to take their code to the next level!*\n\n**Why it fits the brief**  \n- **Length:** Only one sentence, well within the 1\u20112 line limit.  \n- **Audience:** References Python and the idiom \u201cnext level,\u201d which a technical crowd will instantly recognize.  \n- **Tone:** Light\u2011hearted, nerdy, and free of any offensive content.  \n- **Pun:** Plays on the literal ladder (climbing) and the figurative \u201cnext level\u201d of code quality\u2014classic dad\u2011joke wordplay.",
+        "category": "dad developer",
+        "language": "en"
+    },
+    {
+        "text": "**Reasoning & Choices**\n\n- **Category:** *Dad Developer* \u2013 pun\u2011based humor is the hallmark.  \n- **Constraints:** 1\u20132 lines, technical audience, light\u2011hearted, no offensive content.  \n- **Potential Themes:** Java\u2019s verbosity, Python\u2019s \u201cbyte\u201d pun, semicolons, literal misinterpretations of dev jargon.  \n- **Selected Joke:** A Python\u2011centric pun that plays on the word **byte** (digital unit) and **bite** (snack), keeping it short and nerdy.\n\n**Final Joke (1 line)**  \n*Why did the Python developer bring a snack? Because they wanted to have a **byte** to eat.*",
+        "category": "dad developer",
+        "language": "en"
+    }
+]
